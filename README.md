@@ -1,2 +1,2 @@
 # lilToonToPoiyomiToon
-Unity script to convert lilToon materials to Poiyomi Toon materials
+Unity script to create Poiyomi Toon materials from lilToon materials
