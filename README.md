@@ -1,7 +1,7 @@
 # lilToon to PoiyomiToon
 Unity script to create Poiyomi Toon materials from lilToon materials
 
-![Uploading image.png…]()
+![image](https://github.com/LinesGuy/lilToonToPoiyomiToon/assets/60029482/8ad916ca-27dd-4a7c-a8d8-622bcfd0d814)
 
 
 # How to use
