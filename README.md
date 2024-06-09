@@ -4,6 +4,7 @@ Unity script to create Poiyomi Toon materials from lilToon materials
 ![image](https://github.com/LinesGuy/lilToonToPoiyomiToon/assets/60029482/19034527-e683-4e4e-bba9-ac9fac5708c6)
 
 # How to use
+0. Ensure you have [Poiyomi Toon 9](https://github.com/poiyomi/PoiyomiToonShader/releases/latest) installed (Poiyomi 8 not supported and probably won't work)
 1. Install the .UnityPackage from [releases](https://github.com/LinesGuy/lilToonToPoiyomiToon/releases/download/Meow/LinesMaterialConverter.unitypackage)
 2. Select one or more liltoon materials in your project
    
