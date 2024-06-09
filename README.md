@@ -38,11 +38,11 @@ You should now have Poiyomi Toon materials
 
 # What doesn't work 
 
+- Reflections and specular (I can't find a way to consistently convert or approximate the values), if your material looks dark or is missing some light then it's probably this
 - Glitter (soontm)
 - 2nd normal map / Detail normal (soontm)
 - Fur materials (lil/poi fur use completely different methods)
 - Main texture UV setting
-- Reflections and specular (I can't find a way to consistently convert or approximate the values)
 - Rim Shade (I've never seen someone use this so I'm not sure how to use it)
 - Audiolink (I've never used liltoon audiolink)
 - Refraction, Blur, Gem shaders
