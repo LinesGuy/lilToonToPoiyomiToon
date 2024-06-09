@@ -1,7 +1,8 @@
 # lilToon to PoiyomiToon
 Unity script to create Poiyomi Toon materials from lilToon materials
 
-![image](https://github.com/LinesGuy/lilToonToPoiyomiToon/assets/60029482/19034527-e683-4e4e-bba9-ac9fac5708c6)
+![Uploading image.png…]()
+
 
 # How to use
 0. Ensure you have [Poiyomi Toon 9](https://github.com/poiyomi/PoiyomiToonShader/releases/latest) installed (Poiyomi 8 not supported and probably won't work)
