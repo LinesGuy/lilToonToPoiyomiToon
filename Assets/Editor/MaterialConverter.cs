@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
+using System;
 
 public class LinesLiltoonToPoiyomi : EditorWindow {
     [MenuItem("Tools/Convert liltoon material to Poiyomi", false)]
@@ -218,9 +219,11 @@ public class LinesLiltoonToPoiyomi : EditorWindow {
 
         // Reflections
         if (lil.GetFloat("_UseReflection") == 1) {
-            // REFLECTIONS ARE CURRENTLY DISABLED SINCE IDK HOW TO RECREATE THE SPECULAR EUGH
-            // TODO FIX THIS SHITE
+            // Poiyomi Toon and lilToon use different methods for reflections so this is
+            // currently disabled, the values are copied over anyway
+
             //poi.SetFloat("_MochieBRDF", 1);
+
             poi.SetFloat("_MochieMetallicMultiplier", lil.GetFloat("_Metallic"));
             poi.SetFloat("_MochieRoughnessMultiplier", lil.GetFloat("_Smoothness"));
             // TODO Smoothness, Metallic masks
@@ -255,26 +258,28 @@ public class LinesLiltoonToPoiyomi : EditorWindow {
             poi.SetTextureScale("_Matcap", lil.GetTextureScale("_MatCapTex"));
             poi.SetTextureOffset("_Matcap", lil.GetTextureOffset("_MatCapTex"));
             poi.SetColor("_MatcapColor", lil.GetColor("_MatCapColor"));
+            poi.SetFloat("_MatcapBorder", 0.5f); // Poi uses 0.43 by default whereas lil uses 0.5
             poi.SetTexture("_MatcapMask", lil.GetTexture("_MatCapBlendMask"));
-            poi.SetFloat("_MatcapIntensity", lil.GetFloat("_MatCapBlend"));
             poi.SetFloat("_MatcapReplace", 0);
-            if (lil.GetFloat("_MatCapBlendMode") == 0) poi.SetFloat("_MatcapReplace", 1);
-            else if (lil.GetFloat("_MatCapBlendMode") == 1) poi.SetFloat("_MatcapAdd", 1);
-            else if (lil.GetFloat("_MatCapBlendMode") == 2) poi.SetFloat("_MatcapScreen", 1);
-            else if (lil.GetFloat("_MatCapBlendMode") == 3) poi.SetFloat("_MatcapMultiply", 1);
+            float matCapBlend = lil.GetFloat("_MatCapBlend");
+            if (lil.GetFloat("_MatCapBlendMode") == 0) poi.SetFloat("_MatcapReplace", matCapBlend);
+            else if (lil.GetFloat("_MatCapBlendMode") == 1) poi.SetFloat("_MatcapAdd", matCapBlend);
+            else if (lil.GetFloat("_MatCapBlendMode") == 2) poi.SetFloat("_MatcapScreen", matCapBlend);
+            else if (lil.GetFloat("_MatCapBlendMode") == 3) poi.SetFloat("_MatcapMultiply", matCapBlend);
             poi.SetFloat("_MatcapBaseColorMix", lil.GetFloat("_MatCapMainStrength"));
             poi.SetFloat("_MatcapNormal", lil.GetFloat("_MatCapNormalStrength"));
             if (lil.GetFloat("_MatCapLod") != 0) {
                 poi.SetFloat("_MatcapSmoothnessEnabled", 1);
-                poi.SetFloat("_MatcapSmoothness", 1f - lil.GetFloat("_MatCapLod") / 10f);
+                var smoothness = Math.Max(0f, 1f - lil.GetFloat("_MatCapLod") / 10f);
+                poi.SetFloat("_MatcapSmoothness", smoothness);
             }
             if (lil.GetFloat("_MatCapCustomNormal") == 1) {
                 poi.SetFloat("_Matcap0CustomNormal", 1);
                 poi.SetFloat("_MatcapNormal", 0);
-                poi.SetFloat("_MatcapSmoothness", lil.GetFloat("_MatCapBumpScale"));
                 poi.SetTexture("_Matcap0NormalMap", lil.GetTexture("_MatCapBumpMap"));
                 poi.SetTextureScale("_Matcap0NormalMap", lil.GetTextureScale("_MatCapBumpMap"));
                 poi.SetTextureOffset("_Matcap0NormalMap", lil.GetTextureOffset("_MatCapBumpMap"));
+                poi.SetFloat("_Matcap0NormalMapScale", (float)lil.GetFloat("_MatCapBumpScale"));
             }
         }
         // MatCap 2nd
@@ -284,26 +289,28 @@ public class LinesLiltoonToPoiyomi : EditorWindow {
             poi.SetTextureScale("_Matcap2", lil.GetTextureScale("_MatCap2ndTex"));
             poi.SetTextureOffset("_Matcap2", lil.GetTextureOffset("_MatCap2ndTex"));
             poi.SetColor("_Matcap2Color", lil.GetColor("_MatCap2ndColor"));
+            poi.SetFloat("_Matcap2Border", 0.5f);
             poi.SetTexture("_Matcap2Mask", lil.GetTexture("_MatCap2ndBlendMask"));
-            poi.SetFloat("_Matcap2Intensity", lil.GetFloat("_MatCap2ndBlend"));
             poi.SetFloat("_Matcap2Replace", 0);
-            if (lil.GetFloat("_MatCap2ndBlendMode") == 0) poi.SetFloat("_Matcap2Replace", 1);
-            else if (lil.GetFloat("_MatCap2ndBlendMode") == 1) poi.SetFloat("_Matcap2Add", 1);
-            else if (lil.GetFloat("_MatCap2ndBlendMode") == 2) poi.SetFloat("_Matcap2Screen", 1);
-            else if (lil.GetFloat("_MatCap2ndBlendMode") == 3) poi.SetFloat("_Matcap2Multiply", 1);
+            float matCap2ndBlend = lil.GetFloat("_MatCap2ndBlend");
+            if (lil.GetFloat("_MatCap2ndBlendMode") == 0) poi.SetFloat("_Matcap2Replace", matCap2ndBlend);
+            else if (lil.GetFloat("_MatCap2ndBlendMode") == 1) poi.SetFloat("_Matcap2Add", matCap2ndBlend);
+            else if (lil.GetFloat("_MatCap2ndBlendMode") == 2) poi.SetFloat("_Matcap2Screen", matCap2ndBlend);
+            else if (lil.GetFloat("_MatCap2ndBlendMode") == 3) poi.SetFloat("_Matcap2Multiply", matCap2ndBlend);
             poi.SetFloat("_Matcap2BaseColorMix", lil.GetFloat("_MatCap2ndMainStrength"));
             poi.SetFloat("_Matcap2Normal", lil.GetFloat("_MatCap2ndNormalStrength"));
             if (lil.GetFloat("_MatCap2ndLod") != 0) {
                 poi.SetFloat("_Matcap2SmoothnessEnabled", 1);
-                poi.SetFloat("_Matcap2Smoothness", 1f - lil.GetFloat("_MatCap2ndLod") / 10f);
+                var smoothness2nd = Math.Max(0f, 1f - lil.GetFloat("_MatCap2ndLod") / 10f);
+                poi.SetFloat("_Matcap2Smoothness", smoothness2nd);
             }
             if (lil.GetFloat("_MatCap2ndCustomNormal") == 1) {
                 poi.SetFloat("_Matcap1CustomNormal", 1);
                 poi.SetFloat("_Matcap2Normal", 0);
-                poi.SetFloat("_Matcap2Smoothness", lil.GetFloat("_MatCap2ndBumpScale"));
                 poi.SetTexture("_Matcap1NormalMap", lil.GetTexture("_MatCap2ndBumpMap"));
                 poi.SetTextureScale("_Matcap1NormalMap", lil.GetTextureScale("_MatCap2ndBumpMap"));
                 poi.SetTextureOffset("_Matcap1NormalMap", lil.GetTextureOffset("_MatCap2ndBumpMap"));
+                poi.SetFloat("_Matcap1NormalMapScale", (float)lil.GetFloat("_MatCap2ndBumpScale"));
             }
         }
 
