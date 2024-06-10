@@ -11,7 +11,7 @@ public class LinesLiltoonToPoiyomi : EditorWindow {
         // See if we have poi pro installed
         bool isPro = Shader.Find(".poiyomi/Poiyomi Pro") != null;
         // If not, see if we have poi toon installed at all
-        if (Shader.Find(".poiyomi/Poiyomi Toon") == null) {
+        if (!isPro && Shader.Find(".poiyomi/Poiyomi Toon") == null) {
             EditorUtility.DisplayDialog("Convert liltoon to poiyomi", "Looks like you don't have Poiyomi Toon 9 or later installed, boo womp, please install it before running this script!", "OK");
             return;
         }
