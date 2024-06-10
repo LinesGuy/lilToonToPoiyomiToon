@@ -188,13 +188,24 @@ public class LinesLiltoonToPoiyomi : EditorWindow {
             poi.SetFloat("_LightingAdditiveGradientEnd", 0.6f);
         }
 
-        // TODO Emissions
         // Normal map
         poi.SetTexture("_BumpMap", lil.GetTexture("_BumpMap"));
         poi.SetTextureOffset("_BumpMap", lil.GetTextureOffset("_BumpMap"));
         poi.SetTextureScale("_BumpMap", lil.GetTextureScale("_BumpMap"));
         poi.SetFloat("_BumpScale", lil.GetFloat("_BumpScale"));
-        // TODO Normal map 2nd -> Detail map
+        // Normap map 2nd
+        if (lil.GetFloat("_UseBump2ndMap") == 1) {
+            poi.SetFloat("_DetailEnabled", 1);
+            poi.SetTexture("_DetailMask", lil.GetTexture("_Bump2ndScaleMask"));
+            poi.SetTextureScale("_DetailMask", lil.GetTextureScale("_Bump2ndScaleMask"));
+            poi.SetTextureOffset("_DetailMask", lil.GetTextureOffset("_Bump2ndScaleMask"));
+
+            poi.SetTexture("_DetailNormalMap", lil.GetTexture("_Bump2ndMap"));
+            poi.SetTextureOffset("_DetailNormalMap", lil.GetTextureOffset("_Bump2ndMap"));
+            poi.SetTextureScale("_DetailNormalMap", lil.GetTextureScale("_Bump2ndMap"));
+            poi.SetFloat("_DetailTexIntensity", lil.GetFloat("_Bump2ndScale"));
+        }
+        
 
         // Reflections
         if (lil.GetFloat("_UseReflection") == 1) {
