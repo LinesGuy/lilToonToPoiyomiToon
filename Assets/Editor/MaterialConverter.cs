@@ -147,11 +147,12 @@ public class LinesLiltoonToPoiyomi : EditorWindow {
         poi.SetFloat("_MainAlphaMaskMode", lil.GetFloat("_AlphaMaskMode"));
         poi.SetTextureOffset("_AlphaMask", lil.GetTextureOffset("_AlphaMask"));
         poi.SetTextureScale("_AlphaMask", lil.GetTextureScale("_AlphaMask"));
-        poi.SetFloat("_AlphaMaskValue", -(lil.GetFloat("_AlphaMaskValue") - 1)); // lil transparency is [0, 2] but displayed as [-1, 1] which is also inverse of poiyomi [-1, 1]
         if (lil.GetFloat("_AlphaMaskScale") == -1) {
             poi.SetFloat("_AlphaMaskInvert", 1);
+            poi.SetFloat("_AlphaMaskValue", -(lil.GetFloat("_AlphaMaskValue") - 1));
         } else { // lil alpha mask scale = -1
-            poi.SetFloat("_AlphaMaskInvert", 0); 
+            poi.SetFloat("_AlphaMaskInvert", 0);
+            poi.SetFloat("_AlphaMaskValue", lil.GetFloat("_AlphaMaskValue"));
         }
 
         // Shadow -> Shading/Shading if enabled
