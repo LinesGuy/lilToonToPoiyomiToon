@@ -7,11 +7,20 @@ public class LinesLiltoonToPoiyomi : EditorWindow {
     [MenuItem("Tools/Convert liltoon material to Poiyomi", false)]
     private static void ConvertMaterial() {
         if (Selection.objects.Length == 0) return;
+
+        // See if we have poi pro installed
+        bool isPro = Shader.Find(".poiyomi/Poiyomi Pro") != null;
+        // If not, see if we have poi toon installed at all
+        if (Shader.Find(".poiyomi/Poiyomi Toon") == null) {
+            EditorUtility.DisplayDialog("Convert liltoon to poiyomi", "Looks like you don't have Poiyomi Toon 9 or later installed, boo womp, please install it before running this script!", "OK");
+            return;
+        }
+
         List<string> unsupportedMaterials = new List<string>();
         for (int i = 0; i < Selection.objects.Length; i++) {
             if (Selection.objects[i] is Material material) {
                 if (IsLiltoon(material)) {
-                    CreateOpaquePoiyomiMaterial(ref material);
+                    CreatePoiyomiMaterial(ref material, isPro);
                 }
                 else
                 {
@@ -36,13 +45,13 @@ public class LinesLiltoonToPoiyomi : EditorWindow {
         return material.shader.name.Contains("lilToon");
     }
 
-    private static void CreateOpaquePoiyomiMaterial(ref Material lil) {
-        string shaderName = ".poiyomi/Poiyomi Toon";
+    private static void CreatePoiyomiMaterial(ref Material lil, bool isPro) {
+        // Check if we have poiyomi pro installed
+        string shaderName = isPro ? ".poiyomi/Poiyomi Pro" : ".poiyomi/Poiyomi Toon";
 
         if (lil.shader.name.Contains("TwoPass")) {
-            shaderName = ".poiyomi/Poiyomi Toon Two Pass";
+            shaderName = isPro ? ".poiyomi/Poiyomi Pro Two Pass" : ".poiyomi/Poiyomi Toon Two Pass";
         }
-
         Shader shader = Shader.Find(shaderName);
         Material poi = new Material(shader);
 
