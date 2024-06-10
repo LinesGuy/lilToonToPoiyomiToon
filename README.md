@@ -31,7 +31,7 @@ You should now have Poiyomi Toon materials
 - Alpha mask
 - Shadow layers + border
 - AO map (shadow map)
-- Normal map
+- Normal map + 2nd normal map (detail normal)
 - Backlight
 - Matcaps
 - Rim light
@@ -42,7 +42,6 @@ You should now have Poiyomi Toon materials
 
 - Reflections and specular (I can't find a way to consistently convert or approximate the values), if your material looks dark or is missing some light then it's probably this
 - Glitter (soontm)
-- 2nd normal map / Detail normal (soontm)
 - Fur materials (lil/poi fur use completely different methods)
 - Main texture UV setting
 - Rim Shade (I've never seen someone use this so I'm not sure how to use it)
