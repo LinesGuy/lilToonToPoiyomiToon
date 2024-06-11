@@ -329,6 +329,9 @@ public class LinesLiltoonToPoiyomi : EditorWindow {
         if (lil.GetFloat("_UseRim") == 1) {
             poi.SetFloat("_EnableRimLighting", 1);
             poi.SetFloat("_RimStyle", 2);
+            poi.SetTexture("_RimColorTex", lil.GetTexture("_RimColorTex"));
+            poi.SetTextureScale("_RimColorTex", lil.GetTextureScale("_RimColorTex"));
+            poi.SetTextureOffset("_RimColorTex", lil.GetTextureOffset("_RimColorTex"));
             poi.SetColor("_RimColor", lil.GetColor("_RimColor"));
 
             poi.SetFloat("_RimMainStrength", lil.GetFloat("_RimMainStrength"));
