@@ -22,11 +22,9 @@ public class LinesLiltoonToPoiyomi : EditorWindow {
             if (Selection.objects[i] is Material material) {
                 if (IsLiltoon(material)) {
                     CreatePoiyomiMaterial(ref material, isPro);
-                }
-                else
-                {
-                     string path = AssetDatabase.GetAssetPath(material);
-                    if (!string.IsNullOrEmpty(path)) unsupportedMaterials.Add(path); 
+                } else {
+                    string path = AssetDatabase.GetAssetPath(material);
+                    if (!string.IsNullOrEmpty(path)) unsupportedMaterials.Add(path);
                     continue;
                 }
             }
@@ -53,6 +51,10 @@ public class LinesLiltoonToPoiyomi : EditorWindow {
         if (lil.shader.name.Contains("TwoPass")) {
             shaderName = isPro ? ".poiyomi/Poiyomi Pro Two Pass" : ".poiyomi/Poiyomi Toon Two Pass";
         }
+        if (lil.shader.name.Contains("Refraction")) {
+            shaderName = isPro ? ".poiyomi/Poiyomi Pro Grab Pass" : ".poiyomi/Poiyomi Toon Grab Pass";
+        }
+
         Shader shader = Shader.Find(shaderName);
         Material poi = new Material(shader);
 
@@ -86,7 +88,7 @@ public class LinesLiltoonToPoiyomi : EditorWindow {
 
         poi.SetFloat("", lil.GetFloat(""));
         poi.SetFloat("_LightingMonochromatic", lil.GetFloat("_MonochromeLighting"));
-        
+
         poi.SetFloat("_LightingMinLightBrightness", lil.GetFloat("_LightMinLimit"));
         poi.SetFloat("_LightingCap", lil.GetFloat("_LightMaxLimit"));
 
@@ -109,7 +111,7 @@ public class LinesLiltoonToPoiyomi : EditorWindow {
             if (newHue < 0.5) newHue += 1;
             poi.SetFloat("_MainHueShift", newHue);
         }
-        
+
         // saturation [0, 2] to [-1, 1]
         poi.SetFloat("_Saturation", lil.GetColor("_MainTexHSVG").g);
         // idk how to set Value / Gamma :3
@@ -171,16 +173,25 @@ public class LinesLiltoonToPoiyomi : EditorWindow {
 
             poi.SetFloat("_ShadowStrength", lil.GetFloat("_ShadowStrength"));
 
+            poi.SetTexture("_ShadowColorTex", lil.GetTexture("_ShadowColorTex"));
+            poi.SetTextureScale("_ShadowColorTex", lil.GetTextureScale("_ShadowColorTex"));
+            poi.SetTextureOffset("_ShadowColorTex", lil.GetTextureOffset("_ShadowColorTex"));
             poi.SetColor("_ShadowColor", lil.GetColor("_ShadowColor"));
             poi.SetFloat("_ShadowBorder", lil.GetFloat("_ShadowBorder"));
             poi.SetFloat("_ShadowBlur", lil.GetFloat("_ShadowBlur"));
             poi.SetFloat("_ShadowReceive", lil.GetFloat("_ShadowReceive"));
 
+            poi.SetTexture("_Shadow2ndColorTex", lil.GetTexture("_Shadow2ndColorTex"));
+            poi.SetTextureScale("_Shadow2ndColorTex", lil.GetTextureScale("_Shadow2ndColorTex"));
+            poi.SetTextureOffset("_Shadow2ndColorTex", lil.GetTextureOffset("_Shadow2ndColorTex"));
             poi.SetColor("_Shadow2ndColor", lil.GetColor("_Shadow2ndColor"));
             poi.SetFloat("_Shadow2ndBorder", lil.GetFloat("_Shadow2ndBorder"));
             poi.SetFloat("_Shadow2ndBlur", lil.GetFloat("_Shadow2ndBlur"));
             poi.SetFloat("_Shadow2ndReceive", lil.GetFloat("_Shadow2ndReceive"));
 
+            poi.SetTexture("_Shadow3rdColorTex", lil.GetTexture("_Shadow3rdColorTex"));
+            poi.SetTextureScale("_Shadow3rdColorTex", lil.GetTextureScale("_Shadow3rdColorTex"));
+            poi.SetTextureOffset("_Shadow3rdColorTex", lil.GetTextureOffset("_Shadow3rdColorTex"));
             poi.SetColor("_Shadow3rdColor", lil.GetColor("_Shadow3rdColor"));
             poi.SetFloat("_Shadow3rdBorder", lil.GetFloat("_Shadow3rdBorder"));
             poi.SetFloat("_Shadow3rdBlur", lil.GetFloat("_Shadow3rdBlur"));
@@ -215,7 +226,7 @@ public class LinesLiltoonToPoiyomi : EditorWindow {
             poi.SetTextureScale("_DetailNormalMap", lil.GetTextureScale("_Bump2ndMap"));
             poi.SetFloat("_DetailTexIntensity", lil.GetFloat("_Bump2ndScale"));
         }
-        
+
 
         // Reflections
         if (lil.GetFloat("_UseReflection") == 1) {
@@ -338,6 +349,30 @@ public class LinesLiltoonToPoiyomi : EditorWindow {
             poi.SetFloat("_RimVRParallaxStrength", lil.GetFloat("_RimVRParallaxStrength"));
         }
 
+        // RimShade -> Rim Lighting 1
+        if (lil.GetFloat("_UseRimShade") == 1) {
+            // RimShade seems to just be Rim Lighting in "Multiply" mode
+            poi.SetFloat("_EnableRim2Lighting", 1);
+            poi.SetFloat("_Rim2Style", 2);
+
+            poi.SetTexture("_Rim2ColorTex", lil.GetTexture("_RimShadeMask"));
+            poi.SetTextureScale("_Rim2ColorTex", lil.GetTextureScale("_RimShadeMask"));
+            poi.SetTextureOffset("_Rim2ColorTex", lil.GetTextureOffset("_RimShadeMask"));
+
+            // Seems that poiyomi's "rim shade" is ever so slightly brighter than liltoon's rimshade
+            Color rimShadeColor = lil.GetColor("_RimShadeColor");
+            rimShadeColor.r *= 0.922f;
+            rimShadeColor.g *= 0.922f;
+            rimShadeColor.b *= 0.922f;
+            poi.SetColor("_Rim2Color", rimShadeColor);
+
+            poi.SetFloat("_Rim2Border", lil.GetFloat("_RimShadeBorder"));
+            poi.SetFloat("_Rim2Blur", lil.GetFloat("_RimShadeBlur"));
+            poi.SetFloat("_Rim2FresnelPower", lil.GetFloat("_RimShadeFresnelPower"));
+            poi.SetFloat("_Rim2ShadowMask", 0); // lil's rimshade seems to ignore shadows completely
+            poi.SetFloat("_Rim2BlendMode", 3); // Multiply mode
+        }
+
         // Outline
         if (lil.shader.name.Contains("Outline")) {
             poi.SetFloat("_EnableOutlines", 1);
@@ -372,7 +407,7 @@ public class LinesLiltoonToPoiyomi : EditorWindow {
             poi.SetTexture("_EmissionMap", lil.GetTexture("_EmissionMap"));
             poi.SetTextureScale("_EmissionMap", lil.GetTextureScale("_EmissionColor"));
             poi.SetTextureOffset("_EmissionMap", lil.GetTextureOffset("_EmissionColor"));
-            poi.SetColor("_EmissionMapPan", lil.GetColor("_EmissionMap_ScrollRotate") * 20f); 
+            poi.SetColor("_EmissionMapPan", lil.GetColor("_EmissionMap_ScrollRotate") * 20f);
 
             poi.SetColor("_EmissionColor", lil.GetColor("_EmissionColor"));
             if (lil.GetColor("_EmissionBlink").r > 0) {
@@ -390,6 +425,21 @@ public class LinesLiltoonToPoiyomi : EditorWindow {
             poi.SetColor("_EmissionColor1", lil.GetColor("_Emission2ndColor"));
             poi.SetFloat("_EmissionStrength1", lil.GetFloat("_Emission2ndMainStrength"));
         }
+
+        if (lil.shader.name.Contains("Refraction")) {
+            // This is not at all a precise conversion but is better than nothing
+            poi.SetFloat("_RefractionIndex", 1f + lil.GetFloat("_RefractionStrength"));
+            poi.SetFloat("_RefractionFresnelPower", lil.GetFloat("_RefractionFresnelPower"));
+            // Not sure how to transfer "Get color from main" or Color so these are left out
+            if (lil.shader.name.Contains("Blur")) {
+                poi.SetFloat("_EnableBlur", 1);
+                // Kinda arbitrary values used here, looks fairly close to liltoon's blur
+                poi.SetFloat("_GrabBlurDistance", 1);
+                poi.SetFloat("_GrabBlurQuality", 6);
+                poi.SetFloat("_GrabBlurDirections", 5);
+            }
+        }
+
 
         string newMaterialName = Path.GetDirectoryName(AssetDatabase.GetAssetPath(lil)) + "\\PoiConverted_" + lil.name + ".mat";
         AssetDatabase.CreateAsset(poi, newMaterialName);
