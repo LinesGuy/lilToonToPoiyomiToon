@@ -35,8 +35,10 @@ You should now have Poiyomi Toon materials
 - Backlight
 - Matcaps
 - Rim light
+- Rim Shade (converted to 2nd rim light in Multiply mode)
 - Outline
 - Emissions
+- Refraction/Blur (intensity might be a bit off, though)
 
 # What doesn't work 
 
@@ -44,9 +46,8 @@ You should now have Poiyomi Toon materials
 - Glitter (soontm)
 - Fur materials (lil/poi fur use completely different methods)
 - Main texture UV setting
-- Rim Shade (I've never seen someone use this so I'm not sure how to use it)
 - Audiolink (I've never used liltoon audiolink)
-- Refraction, Blur, Gem shaders
+- Gem shaders
 - Tesselation
 - Stencils
 - Probably some other stuff, DM on twitter @LinesTheCat or discord @linesnya (say you're from my converter thing)
