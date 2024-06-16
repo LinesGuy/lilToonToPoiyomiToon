@@ -113,7 +113,7 @@ public class LinesLiltoonToPoiyomi : EditorWindow {
         }
 
         // saturation [0, 2] to [-1, 1]
-        poi.SetFloat("_Saturation", lil.GetColor("_MainTexHSVG").g);
+        poi.SetFloat("_Saturation", lil.GetColor("_MainTexHSVG").g - 1);
         // idk how to set Value / Gamma :3
 
         // Main Color 2nd -> Decal 1
