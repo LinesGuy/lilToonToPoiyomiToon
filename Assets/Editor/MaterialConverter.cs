@@ -86,7 +86,6 @@ public class LinesLiltoonToPoiyomi : EditorWindow {
         poi.SetFloat("_LightingMapMode", 1); // Normalized NDotL
         poi.SetFloat("_LightingDirectionMode", 4); // OpenLit(lil toon)
 
-        poi.SetFloat("", lil.GetFloat(""));
         poi.SetFloat("_LightingMonochromatic", lil.GetFloat("_MonochromeLighting"));
 
         poi.SetFloat("_LightingMinLightBrightness", lil.GetFloat("_LightMinLimit"));
