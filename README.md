@@ -15,9 +15,10 @@ Unity script to create Poiyomi Toon materials from lilToon materials
 
 ![image](https://github.com/LinesGuy/lilToonToPoiyomiToon/assets/60029482/ad91085b-7399-4487-b971-86f32ade80f9) 
 
-You should now have Poiyomi Toon materials
+Backups of the original lilToon materials will be created, and the original materials should now be using Poiyomi shaders, no need to apply the materials
 
-![image](https://github.com/LinesGuy/lilToonToPoiyomiToon/assets/60029482/581e2d07-b8a6-42ed-8302-29d5017240c9)
+![image](https://github.com/user-attachments/assets/15476b20-c743-4d7f-81c9-a846c1a5c9b2)
+
 
 # What works
 
@@ -41,9 +42,9 @@ You should now have Poiyomi Toon materials
 - Refraction/Blur (intensity might be a bit off, though)
 
 # What doesn't work 
-
-- Reflections and specular (I can't find a way to consistently convert or approximate the values), if your material looks dark or is missing some light then it's probably this
-- Glitter (soontm)
+- Reflections and specular and lilToon and Poiyomi use very different methods, if your material looks dark or is missing some light then it's probably this
+- Transparent materials will occasionaly look buggy
+- Glitter
 - Fur materials (lil/poi fur use completely different methods)
 - Main texture UV setting
 - Audiolink (I've never used liltoon audiolink)
