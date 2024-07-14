@@ -13,7 +13,7 @@ public class LinesLiltoonToPoiyomi : EditorWindow {
         bool isPro = Shader.Find(".poiyomi/Poiyomi Pro") != null;
         // If not, see if we have poi toon installed at all
         if (!isPro && Shader.Find(".poiyomi/Poiyomi Toon") == null) {
-            EditorUtility.DisplayDialog("Convert liltoon to poiyomi", "Looks like you don't have Poiyomi Toon 9 or later installed, boo womp, please install it before running this script!", "OK");
+            EditorUtility.DisplayDialog("Convert liltoon to poiyomi", "Looks like you don't have Poiyomi Toon 9 or later installed, please install it before running this script!", "OK");
             return;
         }
 
@@ -45,6 +45,13 @@ public class LinesLiltoonToPoiyomi : EditorWindow {
     }
 
     private static void CreatePoiyomiMaterial(ref Material lil, bool isPro) {
+        // Backup original material
+        AssetDatabase.CreateAsset(new Material(lil), Path.GetDirectoryName(AssetDatabase.GetAssetPath(lil)) + "\\backup_" + lil.name + ".mat");
+
+        // The poiyomi material will be based on the original liltoon material
+        Material poi = lil;
+        lil = new Material(lil);
+
         // Check if we have poiyomi pro installed
         string shaderName = isPro ? ".poiyomi/Poiyomi Pro" : ".poiyomi/Poiyomi Toon";
 
@@ -55,8 +62,7 @@ public class LinesLiltoonToPoiyomi : EditorWindow {
             shaderName = isPro ? ".poiyomi/Poiyomi Pro Grab Pass" : ".poiyomi/Poiyomi Toon Grab Pass";
         }
 
-        Shader shader = Shader.Find(shaderName);
-        Material poi = new Material(shader);
+        poi.shader = Shader.Find(shaderName);
 
         // Rendering Mode -> Rendering Preset
         if (lil.shader.name.Contains("Cutout")) {
@@ -441,9 +447,6 @@ public class LinesLiltoonToPoiyomi : EditorWindow {
                 poi.SetFloat("_GrabBlurDirections", 5);
             }
         }
-
-
-        string newMaterialName = Path.GetDirectoryName(AssetDatabase.GetAssetPath(lil)) + "\\PoiConverted_" + lil.name + ".mat";
-        AssetDatabase.CreateAsset(poi, newMaterialName);
+        AssetDatabase.SaveAssets();
     }
 }
