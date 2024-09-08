@@ -6,6 +6,7 @@ using System;
 
 public class LinesLiltoonToPoiyomi : EditorWindow {
     [MenuItem("Tools/Convert liltoon material to Poiyomi", false)]
+    [MenuItem("Assets/Convert liltoon material to Poiyomi", false)]
     private static void ConvertMaterial() {
         if (Selection.objects.Length == 0) return;
 
