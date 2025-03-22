@@ -1,3 +1,9 @@
+# This script is now defunct
+
+Poiyomi Toon Shaders now includes its own material translation script, making this tool obsolete. The script may work for now but if/when it breaks it won't get updated. Grab the latest version of Poiyomi [here](https://github.com/poiyomi/PoiyomiToonShader/releases), and use it by right clicking a liltoon material (or an avatar in the hierarchy) and translating it like so:
+
+![Screenshot 2025-03-22 010602](https://github.com/user-attachments/assets/a5f9f5eb-3e82-4a8e-8ebb-9eecd098672e)
+
 # lilToon to PoiyomiToon
 Unity script to create Poiyomi Toon materials from lilToon materials
 
